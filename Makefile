@@ -20,15 +20,16 @@ CFLG=-O3 -Wall
 LIBS=-lglut -lGLU -lGL -lm
 endif
 #  OSX/Linux/Unix/Solaris
-CLEAN=rm -f $(EXE) src/*.o src/*.a src/auxiliary/*.o
+CLEAN=rm -f $(EXE) src/*.o src/*.a src/auxiliary/*.o src/objects/*.o
 endif
 
 # Dependencies
 src/hw2.o: src/hw2.c src/hw2_defs.h
 src/auxiliary/print.o: src/auxiliary/print.c src/hw2_defs.h
+src/objects/cube.o: src/objects/cube.c src/hw2_defs.h
 
-# Create archive
-src/hw2_defs.a:src/auxiliary/print.o
+# Create archives
+src/hw2_defs.a:src/auxiliary/print.o src/objects/cube.o
 	ar -rcs $@ $^
 
 # Compile rules

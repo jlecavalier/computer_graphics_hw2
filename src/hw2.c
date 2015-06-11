@@ -7,9 +7,9 @@ void display() {
   glEnable(GL_DEPTH_TEST);
   // Undo transforms
   glLoadIdentity();
-  glColor3f(1,1,1);
-  glWindowPos2i(50,50);
-  Print("Hello, world!");
+
+  cube(0,0,0 , 0.3,0.3,0.3 , 0);
+
   glFlush();
   glutSwapBuffers();
 }
@@ -22,8 +22,10 @@ int main(int argc, char* argv[]) {
   glutInit(&argc,argv);
   // Request double buffer, true color, z buffering
   glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
-  // Window is 600 X 600
-  glutInitWindowSize(600,600);
+  // Window is as large as the user's computer can handle
+  int user_width = glutGet(GLUT_SCREEN_WIDTH);
+  int user_height = glutGet(GLUT_SCREEN_HEIGHT);
+  glutInitWindowSize(user_width,user_height);
   // Actually create the window
   glutCreateWindow("Jay LeCavalier --- hw2");
   // Set callbacks

@@ -19,6 +19,9 @@ extern "C" {
 #endif
 
 void Print(const char* format , ...);
+void cube(double x,double y,double z,
+	      double dx,double dy,double dz,
+	      double th);
 
 #ifdef __cplusplus
 }
