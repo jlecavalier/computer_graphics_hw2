@@ -20,20 +20,29 @@ CFLG=-O3 -Wall
 LIBS=-lglut -lGLU -lGL -lm
 endif
 #  OSX/Linux/Unix/Solaris
-CLEAN=rm -f $(EXE) *.o *.a src/*.o
+CLEAN=rm -f $(EXE) src/*.o src/*.a src/auxiliary/*.o
 endif
 
 # Dependencies
-src/hw2.o: src/hw2.c
+src/hw2.o: src/hw2.c src/hw2_defs.h
+src/auxiliary/print.o: src/auxiliary/print.c src/hw2_defs.h
+
+# Create archive
+src/hw2_defs.a:src/auxiliary/print.o
+	ar -rcs $@ $^
 
 # Compile rules
 src/%.c.o:
 	gcc -c $(CFLG) $<
-.cpp.o:
+src/%.cpp.o:
+	g++ -c $(CFLG) $<
+src/auxiliary/%.c.o:
+	gcc -c $(CFLG) $<
+src/%.cpp.o:
 	g++ -c $(CFLG) $<
 
 # Link
-hw2:src/hw2.o
+hw2:src/hw2.o src/hw2_defs.a
 	gcc -O3 -o $@ $^ $(LIBS)
 
 # Clean
