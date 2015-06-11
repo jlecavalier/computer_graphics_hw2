@@ -4,6 +4,12 @@ EXE=hw2
 # Main target
 all: $(EXE)
 
+# Variables for readability
+AUX=src/auxiliary/
+OBJ=src/objects/
+AUXLIB=$(AUX)print.o
+OBJLIB=$(OBJ)cube.o $(OBJ)axes.o
+
 #  MinGW
 ifeq "$(OS)" "Windows_NT"
 CFLG=-O3 -Wall
@@ -20,16 +26,17 @@ CFLG=-O3 -Wall
 LIBS=-lglut -lGLU -lGL -lm
 endif
 #  OSX/Linux/Unix/Solaris
-CLEAN=rm -f $(EXE) src/*.o src/*.a src/auxiliary/*.o src/objects/*.o
+CLEAN=rm -f $(EXE) src/*.o src/*.a $(AUX)*.o $(OBJ)*.o
 endif
 
 # Dependencies
 src/hw2.o: src/hw2.c src/hw2_defs.h
-src/auxiliary/print.o: src/auxiliary/print.c src/hw2_defs.h
-src/objects/cube.o: src/objects/cube.c src/hw2_defs.h
+src/auxiliary/print.o: $(AUX)print.c src/hw2_defs.h
+src/objects/cube.o: $(OBJ)cube.c src/hw2_defs.h
+src/objects/axes.o: $(OBJ)axes.c src/hw2_defs.h
 
 # Create archives
-src/hw2_defs.a:src/auxiliary/print.o src/objects/cube.o
+src/hw2_defs.a:$(AUXLIB) $(OBJLIB)
 	ar -rcs $@ $^
 
 # Compile rules

@@ -18,10 +18,14 @@
 extern "C" {
 #endif
 
+// AUXILIARY
 void Print(const char* format , ...);
+
+// OBJECTS
 void cube(double x,double y,double z,
 	      double dx,double dy,double dz,
 	      double th);
+void axes(float len);
 
 #ifdef __cplusplus
 }
