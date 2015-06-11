@@ -8,6 +8,7 @@ int ph=0; // Elevation of view angle
 int fov=55; // Field of view (perspective mode)
 double asp=1; // Aspect ratio
 double dim=5.0; // Size of the world
+double strafe=0; // Strafe left and right
 
 void display() {
   // Erase the window and the depth buffer
@@ -22,7 +23,7 @@ void display() {
     double Ex = -2*dim*Sin(th)*Cos(ph);
     double Ey = +2*dim*Sin(ph);
     double Ez = +2*dim*Cos(th)*Cos(ph);
-    gluLookAt(Ex,Ey,Ez , 0,0,0 , 0,Cos(ph),0);
+    gluLookAt(Ex,Ey,Ez , strafe,0,0 , 0,Cos(ph),0);
   }
   // Orthogonal - set world orientation
   else {
@@ -58,6 +59,14 @@ void key(unsigned char ch,int x,int y) {
   // 's' to walk backward
   else if (ch == 's') {
     dim += 0.1;
+  }
+  // 'a' strafes left
+  else if (ch == 'a') {
+    strafe -= 0.1;
+  }
+  // 'd' strafes right
+  else if (ch == 'd') {
+    strafe += 0.1;
   }
   // We may have updated the projection mode, so reproject
   Project(fov,asp,dim,mode);
