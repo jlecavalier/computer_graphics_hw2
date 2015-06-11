@@ -7,7 +7,7 @@ all: $(EXE)
 # Variables for readability
 AUX=src/auxiliary/
 OBJ=src/objects/
-AUXLIB=$(AUX)print.o
+AUXLIB=$(AUX)print.o $(AUX)project.o $(AUX)params.o
 OBJLIB=$(OBJ)cube.o $(OBJ)axes.o
 
 #  MinGW
@@ -32,6 +32,8 @@ endif
 # Dependencies
 src/hw2.o: src/hw2.c src/hw2_defs.h
 src/auxiliary/print.o: $(AUX)print.c src/hw2_defs.h
+src/auxiliary/project.o: $(AUX)project.c src/hw2_defs.h
+src/auxiliary/params.o: $(AUX)params.c src/hw2_defs.h
 src/objects/cube.o: $(OBJ)cube.c src/hw2_defs.h
 src/objects/axes.o: $(OBJ)axes.c src/hw2_defs.h
 
