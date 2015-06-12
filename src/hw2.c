@@ -16,6 +16,7 @@ float l_theta=90;
 float l_phi=0;
 double lookat_x=0;
 double lookat_y=0;
+double lookat_z=0;
 
 void display() {
   // Erase the window and the depth buffer
@@ -27,9 +28,10 @@ void display() {
 
   // Perspective - set eye position
   if (mode) {
-    lookat_x = 5*(cam_x - Cos(l_theta));
-    lookat_y = 5*(Sin(l_phi));
-    gluLookAt(cam_x,0,cam_z , lookat_x,lookat_y,cam_z-5 , 0,1,0);
+    lookat_x = (cam_x + Sin(l_theta));
+    lookat_y = (Sin(l_phi));
+    lookat_z = (cam_z - Cos(l_theta));
+    gluLookAt(cam_x,0,cam_z , lookat_x,lookat_y,lookat_z , 0,1,0);
   }
   // Orthogonal - set world orientation
   else {
@@ -40,10 +42,13 @@ void display() {
   // Cube at origin with length 0.3 and no rotation
   cube(0,0,0 , 0.3,0.3,0.3 , 0);
 
+  // Cube behind user at start position
+  cube(0,0,10 , 0.1,0.1,0.1 , 0);
+
   // Display axes and params in debug mode
   if(debug) {
     axes(1);
-    Params(th,ph,mode,l_theta,l_phi);
+    Params(th,ph,mode,l_theta,l_phi,lookat_x,lookat_y,lookat_z);
   }
 
   glFlush();
@@ -51,6 +56,7 @@ void display() {
 }
 
 void key(unsigned char ch,int x,int y) {
+
   float mat[16];
   glGetFloatv(GL_MODELVIEW_MATRIX, mat);
   // Exit when the user presses ESC
@@ -131,7 +137,7 @@ void special(int key,int x,int y) {
 void passive_mouse(int x, int y) {
   glLoadIdentity();
   float x_prime = (float)x;
-  l_theta = x_prime*(180/win_width);
+  l_theta = x_prime*(360/win_width);
   if (y >= (win_height/2)) {
     l_phi = 0;
   }

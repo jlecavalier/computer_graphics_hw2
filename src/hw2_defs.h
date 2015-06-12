@@ -24,7 +24,8 @@ extern "C" {
 // AUXILIARY
 void Print(const char* format , ...);
 void Project(int fov,double asp,double dim,int mode);
-void Params(int th,int ph,int mode,float l_theta,float l_phi);
+void Params(int th,int ph,int mode,float l_theta,float l_phi,
+			double lookat_x,double lookat_y,double lookat_z);
 
 // OBJECTS
 void cube(double x,double y,double z,
