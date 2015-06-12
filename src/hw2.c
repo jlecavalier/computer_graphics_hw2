@@ -43,7 +43,7 @@ void display() {
   // Display axes and params in debug mode
   if(debug) {
     axes(1);
-    Params(th,ph,mode,l_theta);
+    Params(th,ph,mode,l_theta,l_phi);
   }
 
   glFlush();
@@ -132,7 +132,7 @@ void passive_mouse(int x, int y) {
   }
   else {
     float y_prime = win_height - (float)y;
-    l_phi = y_prime*(90/win_height);
+    l_phi = (y_prime*(90/win_height))-45;
   }
   glLoadIdentity();
   glutPostRedisplay();
