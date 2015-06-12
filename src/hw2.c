@@ -12,7 +12,8 @@ double cam_x=0; // Strafe left and right
 double cam_z=5; // Walk forwards and backwards
 float win_width=0;
 float win_height=0;
-float l_theta;
+float l_theta=90;
+double lookat_x=0;
 
 void display() {
   // Erase the window and the depth buffer
@@ -24,7 +25,7 @@ void display() {
 
   // Perspective - set eye position
   if (mode) {
-    double lookat_x = cam_x - Cos(l_theta);
+    lookat_x = 5*(cam_x - Cos(l_theta));
     gluLookAt(cam_x,0,cam_z , lookat_x,0,cam_z-5 , 0,1,0);
   }
   // Orthogonal - set world orientation
@@ -56,17 +57,19 @@ void key(unsigned char ch,int x,int y) {
   }
   // 'w' to walk forward
   else if (ch == 'w') {
-    cam_z -= 0.1;
+    cam_x += 0.1*(cam_x - Cos(l_theta));
+    cam_z -= 0.1*(cam_z - Sin(l_theta));
   }
   // 's' to walk backward
   else if (ch == 's') {
-    cam_z += 0.1;
+    cam_x -= 0.1*(cam_x - Cos(l_theta));
+    cam_z += 0.1*(cam_z - Sin(l_theta));
   }
-  // 'a' cam_xs left
+  // 'a' strafe left
   else if (ch == 'a') {
     cam_x -= 0.1;
   }
-  // 'd' cam_xs right
+  // 'd' strafe right
   else if (ch == 'd') {
     cam_x += 0.1;
   }
