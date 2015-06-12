@@ -31,7 +31,7 @@ void display() {
     lookat_x = (cam_x + Sin(l_theta));
     lookat_y = (Sin(l_phi));
     lookat_z = (cam_z - Cos(l_theta));
-    gluLookAt(cam_x,0,cam_z , lookat_x,lookat_y,lookat_z , 0,1,0);
+    gluLookAt(cam_x,0.2,cam_z , lookat_x,lookat_y,lookat_z , 0,1,0);
   }
   // Orthogonal - set world orientation
   else {
@@ -40,10 +40,17 @@ void display() {
   }
 
   // Cube at origin with length 0.3 and no rotation
-  cube(0,0,0 , 0.3,0.3,0.3 , 0);
+  //cube(0,0,0 , 0.3,0.3,0.3 , 0);
 
   // Cube behind user at start position
-  cube(0,0,10 , 0.1,0.1,0.1 , 0);
+  //cube(0,0,10 , 0.1,0.1,0.1 , 0);
+
+  // 0.34509803921,0.65882352941,0.4, 47 99 56
+  // A grassy plane
+  plane(0,0,5, 
+        47.0/255.0,99.0/255.0,56.0/255.0,
+        500, 
+        0,0,0);
 
   // Display axes and params in debug mode
   if(debug) {
@@ -139,11 +146,11 @@ void passive_mouse(int x, int y) {
   float x_prime = (float)x;
   l_theta = x_prime*(360/win_width);
   if (y >= (win_height/2)) {
-    l_phi = 0;
+    l_phi = 34;
   }
   else {
     float y_prime = win_height - (float)y;
-    l_phi = (y_prime*(90/win_height))-45;
+    l_phi = (y_prime*(90/win_height))-11;
   }
   glLoadIdentity();
   glutPostRedisplay();

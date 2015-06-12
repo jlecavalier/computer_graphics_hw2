@@ -8,7 +8,7 @@ all: $(EXE)
 AUX=src/auxiliary/
 OBJ=src/objects/
 AUXLIB=$(AUX)print.o $(AUX)project.o $(AUX)params.o
-OBJLIB=$(OBJ)cube.o $(OBJ)axes.o
+OBJLIB=$(OBJ)cube.o $(OBJ)axes.o $(OBJ)plane.o
 
 #  MinGW
 ifeq "$(OS)" "Windows_NT"
@@ -36,6 +36,7 @@ src/auxiliary/project.o: $(AUX)project.c src/hw2_defs.h
 src/auxiliary/params.o: $(AUX)params.c src/hw2_defs.h
 src/objects/cube.o: $(OBJ)cube.c src/hw2_defs.h
 src/objects/axes.o: $(OBJ)axes.c src/hw2_defs.h
+src/objects/plane.o: $(OBJ)plane.c src/hw2_defs.h
 
 # Create archives
 src/hw2_defs.a:$(AUXLIB) $(OBJLIB)

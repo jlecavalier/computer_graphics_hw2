@@ -32,6 +32,10 @@ void cube(double x,double y,double z,
 	      double dx,double dy,double dz,
 	      double th);
 void axes(float len);
+void plane(double x,double y,double z,
+	      float r,float g,float b,
+	      double dim,
+	      double thx,double thy,double thz);
 
 #ifdef __cplusplus
 }
