@@ -13,7 +13,9 @@ double cam_z=5; // Walk forwards and backwards
 float win_width=0;
 float win_height=0;
 float l_theta=90;
+float l_phi=0;
 double lookat_x=0;
+double lookat_y=0;
 
 void display() {
   // Erase the window and the depth buffer
@@ -26,7 +28,8 @@ void display() {
   // Perspective - set eye position
   if (mode) {
     lookat_x = 5*(cam_x - Cos(l_theta));
-    gluLookAt(cam_x,0,cam_z , lookat_x,0,cam_z-5 , 0,1,0);
+    lookat_y = 5*(Sin(l_phi));
+    gluLookAt(cam_x,0,cam_z , lookat_x,lookat_y,cam_z-5 , 0,1,0);
   }
   // Orthogonal - set world orientation
   else {
@@ -67,11 +70,11 @@ void key(unsigned char ch,int x,int y) {
   }
   // 'a' strafe left
   else if (ch == 'a') {
-    cam_x -= 0.1;
+    cam_x += 0.1*(cam_x - Cos(l_theta));
   }
   // 'd' strafe right
   else if (ch == 'd') {
-    cam_x += 0.1;
+    cam_x -= 0.1*(cam_x - Cos(l_theta));
   }
   // We may have updated the projection mode, so reproject
   Project(fov,asp,dim,mode);
@@ -124,6 +127,13 @@ void passive_mouse(int x, int y) {
   glLoadIdentity();
   float x_prime = (float)x;
   l_theta = x_prime*(180/win_width);
+  if (y >= (win_height/2)) {
+    l_phi = 0;
+  }
+  else {
+    float y_prime = win_height - (float)y;
+    l_phi = y_prime*(90/win_height);
+  }
   glLoadIdentity();
   glutPostRedisplay();
 }
