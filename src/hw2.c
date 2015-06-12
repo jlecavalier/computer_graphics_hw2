@@ -51,6 +51,8 @@ void display() {
 }
 
 void key(unsigned char ch,int x,int y) {
+  float mat[16];
+  glGetFloatv(GL_MODELVIEW_MATRIX, mat);
   // Exit when the user presses ESC
   if (ch == 27) {
     exit(0);
@@ -60,21 +62,24 @@ void key(unsigned char ch,int x,int y) {
   }
   // 'w' to walk forward
   else if (ch == 'w') {
-    cam_x += 0.1*(cam_x - Cos(l_theta));
-    cam_z -= 0.1*(cam_z - Sin(l_theta));
+
+    cam_x -= 0.1*(mat[2]);
+    cam_z -= 0.1*(mat[10]);
   }
   // 's' to walk backward
   else if (ch == 's') {
-    cam_x -= 0.1*(cam_x - Cos(l_theta));
-    cam_z += 0.1*(cam_z - Sin(l_theta));
+    cam_x += 0.1*(mat[2]);
+    cam_z += 0.1*(mat[10]);
   }
   // 'a' strafe left
   else if (ch == 'a') {
-    cam_x += 0.1*(cam_x - Cos(l_theta));
+    cam_x -= 0.1*(mat[0]);
+    cam_z -= 0.1*(mat[8]);
   }
   // 'd' strafe right
   else if (ch == 'd') {
-    cam_x -= 0.1*(cam_x - Cos(l_theta));
+    cam_x += 0.1*(mat[0]);
+    cam_z += 0.1*(mat[8]);
   }
   // We may have updated the projection mode, so reproject
   Project(fov,asp,dim,mode);
