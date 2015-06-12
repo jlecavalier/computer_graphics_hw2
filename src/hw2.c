@@ -8,7 +8,11 @@ int ph=0; // Elevation of view angle
 int fov=55; // Field of view (perspective mode)
 double asp=1; // Aspect ratio
 double dim=5.0; // Size of the world
-double strafe=0; // Strafe left and right
+double cam_x=0; // Strafe left and right
+double cam_z=5; // Walk forwards and backwards
+float win_width=0;
+float win_height=0;
+float l_theta;
 
 void display() {
   // Erase the window and the depth buffer
@@ -20,10 +24,8 @@ void display() {
 
   // Perspective - set eye position
   if (mode) {
-    double Ex = -2*dim*Sin(th)*Cos(ph);
-    double Ey = +2*dim*Sin(ph);
-    double Ez = +2*dim*Cos(th)*Cos(ph);
-    gluLookAt(Ex,Ey,Ez , strafe,0,0 , 0,Cos(ph),0);
+    double lookat_x = cam_x - Cos(l_theta);
+    gluLookAt(cam_x,0,cam_z , lookat_x,0,cam_z-5 , 0,1,0);
   }
   // Orthogonal - set world orientation
   else {
@@ -37,7 +39,7 @@ void display() {
   // Display axes and params in debug mode
   if(debug) {
     axes(1);
-    Params(th,ph,mode);
+    Params(th,ph,mode,l_theta);
   }
 
   glFlush();
@@ -54,19 +56,19 @@ void key(unsigned char ch,int x,int y) {
   }
   // 'w' to walk forward
   else if (ch == 'w') {
-    dim -= 0.1;
+    cam_z -= 0.1;
   }
   // 's' to walk backward
   else if (ch == 's') {
-    dim += 0.1;
+    cam_z += 0.1;
   }
-  // 'a' strafes left
+  // 'a' cam_xs left
   else if (ch == 'a') {
-    strafe -= 0.1;
+    cam_x -= 0.1;
   }
-  // 'd' strafes right
+  // 'd' cam_xs right
   else if (ch == 'd') {
-    strafe += 0.1;
+    cam_x += 0.1;
   }
   // We may have updated the projection mode, so reproject
   Project(fov,asp,dim,mode);
@@ -77,6 +79,9 @@ void key(unsigned char ch,int x,int y) {
 void reshape(int width,int height) {
   // Find the aspect ratio
   asp = (height>0) ? (double)width/height : 1;
+  // Set global width and height
+  win_width = (float)width;
+  win_height = (float)height;
   // Set the viewport to the entire window
   glViewport(0,0,width,height);
   // Set the projection accordingly
@@ -112,6 +117,14 @@ void special(int key,int x,int y) {
   glutPostRedisplay();
 }
 
+void passive_mouse(int x, int y) {
+  glLoadIdentity();
+  float x_prime = (float)x;
+  l_theta = x_prime*(180/win_width);
+  glLoadIdentity();
+  glutPostRedisplay();
+}
+
 /*
   Start up GLUT and tell it what to do
 */
@@ -131,6 +144,8 @@ int main(int argc, char* argv[]) {
   glutKeyboardFunc(key);
   glutReshapeFunc(reshape);
   glutSpecialFunc(special);
+  glutPassiveMotionFunc(passive_mouse);
+  glutMotionFunc(passive_mouse);
   // Pass control to GLUT so it can interact with the user
   glutMainLoop();
   return 0;
