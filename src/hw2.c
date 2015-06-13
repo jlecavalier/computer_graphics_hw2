@@ -2,7 +2,7 @@
 
 // Global Vars
 int debug=0; // Debug mode
-int mode=0; // projection mode
+int mode=1; // projection mode
 int th=0; // Azimuth of view angle
 int ph=0; // Elevation of view angle
 int fov=55; // Field of view (perspective mode)
@@ -58,6 +58,15 @@ void display() {
     }
   }
 
+  // Fence at origin, no rotation.
+  double k;
+  for (k=-7;k<=7;k+=.5) {
+    fence(k,0,-7,0);
+    fence(-7,0,k,90);
+    fence(k,0,7,0);
+    fence(7,0,k,90);
+  }
+
   // Display axes and params in debug mode
   if(debug) {
     axes(1);
@@ -107,10 +116,10 @@ void key(unsigned char ch,int x,int y) {
     cam_z += (mat[8])/2.0;
   }
 
-  if (cam_x < -6) {cam_x = -6;}
-  if (cam_x > 6) {cam_x = 6;}
-  if (cam_z > 6) {cam_z = 6;}
-  if (cam_z < -6) {cam_z = 6;}
+  if (cam_x < -5.5) {cam_x = -5.5;}
+  if (cam_x > 5.5) {cam_x = 5.5;}
+  if (cam_z > 5.5) {cam_z = 5.5;}
+  if (cam_z < -5.5) {cam_z = 5.5;}
   // We may have updated the projection mode, so reproject
   Project(fov,asp,dim,mode);
   // Redisplay
@@ -183,7 +192,7 @@ int main(int argc, char* argv[]) {
   int j;
   for (i=0;i<7;i++) {
     for (j=0;j<7;j++) {
-      dx_mat[i][j] = (drand48()*.02)+.001;
+      dx_mat[i][j] = (drand48()*.015)+.001;
       th_mat[i][j] = ((double)rand()/360);
     }
   }

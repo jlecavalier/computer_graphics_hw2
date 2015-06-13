@@ -43,7 +43,11 @@ void plane(double x,double y,double z,
 void grass_blade(double x,double y,double z,
 	             double dx,double dy,double dz,
 	             double th);
-void grass_block(double x,double y,double z,double dx_mat[7][7],double th_mat[7][7]);
+void grass_block(double x,double y,double z,
+	             double dx_mat[7][7],double th_mat[7][7]);
+void fencepost(double x,double y,double z,
+	           double dx,double dy,double dz);
+void fence(double x,double y,double z,double th);
 
 #ifdef __cplusplus
 }
