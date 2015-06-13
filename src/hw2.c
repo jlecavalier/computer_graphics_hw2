@@ -18,6 +18,10 @@ double lookat_x=0;
 double lookat_y=0;
 double lookat_z=0;
 
+// For the grass blades
+double dx_mat[7][7];
+double th_mat[7][7];
+
 void display() {
   // Erase the window and the depth buffer
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -39,20 +43,20 @@ void display() {
     glRotatef(th,0,1,0);
   }
 
-  // Cube at origin with length 0.3 and no rotation
-  //cube(0,0,0 , 0.3,0.3,0.3 , 0);
-
-  // Cube behind user at start position
-  //cube(0,0,10 , 0.1,0.1,0.1 , 0);
-
-  // 0.34509803921,0.65882352941,0.4, 47 99 56
   // A grassy plane
   plane(0,0,5, 
         47.0/255.0,99.0/255.0,56.0/255.0,
         500, 
         0,0,0);
 
-  grass_blade();
+  // Blocks of grass!
+  int i;
+  int j;
+  for (i=-7;i<=7;i++) {
+    for (j=-7;j<=7;j++) {
+      grass_block(i,0,j,dx_mat,th_mat);
+    }
+  }
 
   // Display axes and params in debug mode
   if(debug) {
@@ -162,6 +166,15 @@ void passive_mouse(int x, int y) {
   Start up GLUT and tell it what to do
 */
 int main(int argc, char* argv[]) {
+  srand(time(NULL));
+  int i;
+  int j;
+  for (i=0;i<7;i++) {
+    for (j=0;j<7;j++) {
+      dx_mat[i][j] = (drand48()*.02)+.001;
+      th_mat[i][j] = ((double)rand()/360);
+    }
+  }
   // Initialize GLUT
   glutInit(&argc,argv);
   // Request double buffer, true color, z buffering
