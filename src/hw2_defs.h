@@ -36,6 +36,7 @@ void plane(double x,double y,double z,
 	      float r,float g,float b,
 	      double dim,
 	      double thx,double thy,double thz);
+void grass_blade();
 
 #ifdef __cplusplus
 }

@@ -52,6 +52,8 @@ void display() {
         500, 
         0,0,0);
 
+  grass_blade();
+
   // Display axes and params in debug mode
   if(debug) {
     axes(1);
