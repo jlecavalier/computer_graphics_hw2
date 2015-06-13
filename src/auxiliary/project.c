@@ -17,7 +17,9 @@ void Project(int fov,double asp,double dim, int mode) {
     gluPerspective(fov,asp,dim/4,4*dim);
   }
   else {
-  	glOrtho(-asp*dim,+asp*dim, -dim,+dim, -dim,+dim);
+    // bottom/top -dim/+dim
+    // near/far -dim/+dim
+  	glOrtho(-asp*dim,+asp*dim, -dim/20,+dim, -16,+16);
   }
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();

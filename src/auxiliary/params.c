@@ -7,6 +7,7 @@ void Params(int th,int ph,int mode,double l_theta,double l_phi,
 	        float rx, float ry, float rz) {
   glColor3f(1,1,1);
   if (!mode) {
+  	glColor3f(0,0,0);
   	glWindowPos2i(5,20);
     Print("Viewing Angle=%d, %d", th,ph);
   }

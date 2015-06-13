@@ -23,6 +23,7 @@ double dx_mat[7][7];
 double th_mat[7][7];
 
 void display() {
+  glClearColor(4.0/255.0,12.0/255.0,31.0/255.0,1);
   // Erase the window and the depth buffer
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   // Enable Z-Buffering
@@ -39,14 +40,17 @@ void display() {
   }
   // Orthogonal - set world orientation
   else {
+    glTranslated(0,0,0);
     glRotatef(ph,1,0,0);
     glRotatef(th,0,1,0);
+    glScaled(1,1,1);
+    //glScaled(1.0/10.0,1.0/10.0,1.0/10.0);
   }
 
   // A grassy plane
   plane(0,0,5, 
         47.0/255.0,99.0/255.0,56.0/255.0,
-        50, 
+        16, 
         0,0,0);
 
   // Blocks of grass!
@@ -60,7 +64,7 @@ void display() {
 
   // Fence at origin, no rotation.
   double k;
-  for (k=-7;k<=7;k+=.5) {
+  for (k=-8;k<=8;k+=.5) {
     fence(k,0,-7,0);
     fence(-7,0,k,90);
     fence(k,0,7,0);
@@ -116,10 +120,10 @@ void key(unsigned char ch,int x,int y) {
     cam_z += (mat[8])/2.0;
   }
 
-  if (cam_x < -5.5) {cam_x = -5.5;}
-  if (cam_x > 5.5) {cam_x = 5.5;}
-  if (cam_z > 5.5) {cam_z = 5.5;}
-  if (cam_z < -5.5) {cam_z = 5.5;}
+  if (cam_x < -5.3) {cam_x = -5.3;}
+  if (cam_x > 5.3) {cam_x = 5.3;}
+  if (cam_z > 5.3) {cam_z = 5.3;}
+  if (cam_z < -5.3) {cam_z = 5.3;}
   // We may have updated the projection mode, so reproject
   Project(fov,asp,dim,mode);
   // Redisplay
@@ -160,6 +164,8 @@ void special(int key,int x,int y) {
   // Angles are in degrees!
   th %= 360;
   ph %= 360;
+  if (ph < 5) {ph = 5;}
+  if (ph > 45) {ph = 45;}
 
   // We need to update the projection
   Project(fov,asp,dim,mode);
@@ -192,7 +198,7 @@ int main(int argc, char* argv[]) {
   int j;
   for (i=0;i<7;i++) {
     for (j=0;j<7;j++) {
-      dx_mat[i][j] = (drand48()*.015)+.001;
+      dx_mat[i][j] = (drand48()*.013)+.001;
       th_mat[i][j] = ((double)rand()/360);
     }
   }
