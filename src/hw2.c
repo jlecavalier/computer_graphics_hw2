@@ -9,11 +9,11 @@ int fov=55; // Field of view (perspective mode)
 double asp=1; // Aspect ratio
 double dim=5.0; // Size of the world
 double cam_x=0; // Strafe left and right
-double cam_z=5; // Walk forwards and backwards
-float win_width=0;
-float win_height=0;
-float l_theta=90;
-float l_phi=0;
+double cam_z=0; // Walk forwards and backwards
+double win_width=0;
+double win_height=0;
+double l_theta=90;
+double l_phi=0;
 double lookat_x=0;
 double lookat_y=0;
 double lookat_z=0;
@@ -32,7 +32,7 @@ void display() {
 
   // Perspective - set eye position
   if (mode) {
-    lookat_x = (cam_x + Sin(l_theta));
+    lookat_x = (cam_x + (double)Sin(l_theta));
     lookat_y = (Sin(l_phi));
     lookat_z = (cam_z - Cos(l_theta));
     gluLookAt(cam_x,0.2,cam_z , lookat_x,lookat_y,lookat_z , 0,1,0);
@@ -46,7 +46,7 @@ void display() {
   // A grassy plane
   plane(0,0,5, 
         47.0/255.0,99.0/255.0,56.0/255.0,
-        500, 
+        50, 
         0,0,0);
 
   // Blocks of grass!
@@ -61,7 +61,13 @@ void display() {
   // Display axes and params in debug mode
   if(debug) {
     axes(1);
-    Params(th,ph,mode,l_theta,l_phi,lookat_x,lookat_y,lookat_z);
+    float mat[16];
+    glGetFloatv(GL_MODELVIEW_MATRIX, mat);
+    Params(th,ph,mode,l_theta,l_phi,
+           lookat_x,lookat_y,lookat_z,
+           cam_x,cam_z,
+           mat[2],mat[6],mat[10],
+           mat[0],mat[4],mat[8]);
   }
 
   glFlush();
@@ -82,24 +88,29 @@ void key(unsigned char ch,int x,int y) {
   // 'w' to walk forward
   else if (ch == 'w') {
 
-    cam_x -= 0.1*(mat[2]);
-    cam_z -= 0.1*(mat[10]);
+    cam_x -= (mat[2])/2.0;
+    cam_z -= (mat[10])/2.0;
   }
   // 's' to walk backward
   else if (ch == 's') {
-    cam_x += 0.1*(mat[2]);
-    cam_z += 0.1*(mat[10]);
+    cam_x += (mat[2])/2.0;
+    cam_z += (mat[10])/2.0;
   }
   // 'a' strafe left
   else if (ch == 'a') {
-    cam_x -= 0.1*(mat[0]);
-    cam_z -= 0.1*(mat[8]);
+    cam_x -= (mat[0])/2.0;
+    cam_z -= (mat[8])/2.0;
   }
   // 'd' strafe right
   else if (ch == 'd') {
-    cam_x += 0.1*(mat[0]);
-    cam_z += 0.1*(mat[8]);
+    cam_x += (mat[0])/2.0;
+    cam_z += (mat[8])/2.0;
   }
+
+  if (cam_x < -6) {cam_x = -6;}
+  if (cam_x > 6) {cam_x = 6;}
+  if (cam_z > 6) {cam_z = 6;}
+  if (cam_z < -6) {cam_z = 6;}
   // We may have updated the projection mode, so reproject
   Project(fov,asp,dim,mode);
   // Redisplay
@@ -110,8 +121,8 @@ void reshape(int width,int height) {
   // Find the aspect ratio
   asp = (height>0) ? (double)width/height : 1;
   // Set global width and height
-  win_width = (float)width;
-  win_height = (float)height;
+  win_width = (double)width;
+  win_height = (double)height;
   // Set the viewport to the entire window
   glViewport(0,0,width,height);
   // Set the projection accordingly
@@ -149,7 +160,7 @@ void special(int key,int x,int y) {
 
 void passive_mouse(int x, int y) {
   glLoadIdentity();
-  float x_prime = (float)x;
+  double x_prime = (double)x;
   l_theta = x_prime*(360/win_width);
   if (y >= (win_height/2)) {
     l_phi = 34;
@@ -159,6 +170,7 @@ void passive_mouse(int x, int y) {
     l_phi = (y_prime*(90/win_height))-11;
   }
   glLoadIdentity();
+  Project(fov,asp,dim,mode);
   glutPostRedisplay();
 }
 
