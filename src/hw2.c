@@ -71,6 +71,9 @@ void display() {
     fence(7,0,k,90);
   }
 
+  // The moon!
+  moon(6,6,6,.5,110,90,0);
+
   // Display axes and params in debug mode
   if(debug) {
     axes(1);
