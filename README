@@ -3,3 +3,48 @@ BY: JAY LECAVALIER
 START DATE: 6/10/15
 MODIFIED: 6/10/15
 HOURS SPENT: 14
+
+CONTENTS:
+1. Description
+2. How to compile and run
+3. Key bindings
+
+/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%
+
+1. DESCRIPTION
+This program allows the user to explore a 3D backyard, including
+a field of grass, a fence, and the moon in the night sky. The user
+can walk around in this backyard and look around at any angle desired.
+
+This program features two viewing modes: orthogonal and perspective.
+In perspective mode, the user has a 'first person' view of the world,
+and can walk around and look wherever he/she desires. In orthogonal
+mode, the user looks at the world from a bird's eye view, and is 
+able to change the viewing angle only.
+
+/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%
+
+2. HOW TO COMPILE AND RUN
+To compile, use your terminal to navigate to the directory containing
+this README and type 'make'.
+
+To run the program, type ./hw2 in the directory containing this README.
+
+To clean up afterwards, type 'make clean'.
+
+/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%
+
+3. Key bindings
+
+'m'				Switch between orthogonal/perspective modes.
+F1				Debug mode (shows axes and parameters on screen).
+
+ORTHOGONAL MODE ONLY:
+arrow keys		Change viewing angle
+
+PERSPECTIVE MODE ONLY:
+'w'				Walk forwards
+'a'				strafe left
+'s'				walk backwards
+'d'				strafe right
+mouse			point in the direction you want to look at

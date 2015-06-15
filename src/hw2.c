@@ -4,17 +4,17 @@
 int debug=0; // Debug mode
 int mode=1; // projection mode
 int th=0; // Azimuth of view angle
-int ph=0; // Elevation of view angle
+int ph=5; // Elevation of view angle
 int fov=55; // Field of view (perspective mode)
 double asp=1; // Aspect ratio
 double dim=5.0; // Size of the world
-double cam_x=0; // Strafe left and right
-double cam_z=0; // Walk forwards and backwards
-double win_width=0;
-double win_height=0;
-double l_theta=90;
-double l_phi=0;
-double lookat_x=0;
+double cam_x=0; // Camera position
+double cam_z=0; // Camera position
+double win_width=0; // The window width
+double win_height=0; // The window height
+double l_theta=90; // rotation angle in xz-plane
+double l_phi=0; // Rotation angle in yz-plane
+double lookat_x=0; // where is the camera pointing?
 double lookat_y=0;
 double lookat_z=0;
 
@@ -33,9 +33,11 @@ void display() {
 
   // Perspective - set eye position
   if (mode) {
+    // Calculate where to point the camera.
     lookat_x = (cam_x + (double)Sin(l_theta));
     lookat_y = (Sin(l_phi));
     lookat_z = (cam_z - Cos(l_theta));
+    // Point the camera
     gluLookAt(cam_x,0.2,cam_z , lookat_x,lookat_y,lookat_z , 0,1,0);
   }
   // Orthogonal - set world orientation
@@ -122,7 +124,8 @@ void key(unsigned char ch,int x,int y) {
     cam_x += (mat[0])/2.0;
     cam_z += (mat[8])/2.0;
   }
-
+  
+  // Don't let the user walk through the fence!
   if (cam_x < -5.3) {cam_x = -5.3;}
   if (cam_x > 5.3) {cam_x = 5.3;}
   if (cam_z > 5.3) {cam_z = 5.3;}
@@ -179,6 +182,8 @@ void special(int key,int x,int y) {
 void passive_mouse(int x, int y) {
   glLoadIdentity();
   double x_prime = (double)x;
+  // Calculate the camera rotation based on where
+  // the user points the mouse. 
   l_theta = x_prime*(360/win_width);
   if (y >= (win_height/2)) {
     l_phi = 34;
